@@ -1,0 +1,13 @@
+[package]
+name = "cc-ftp"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-trait = "0.1.80"
+clap = { version = "4.5.7", features = ["derive"] }
+libunftp = "0.20.0"
+regex = "1.10.5"
+tokio = { version = "1.38.0", features = ["full"] }
+unftp-sbe-fs = "0.2.5"
+unftp-sbe-rooter = "0.2.1"
