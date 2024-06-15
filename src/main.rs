@@ -1,6 +1,6 @@
 mod user;
 mod auth;
-use std::{path::PathBuf, sync::Arc};
+use std::{fs::File, path::PathBuf, sync::Arc};
 
 use auth::Auth;
 use clap::Parser;
@@ -37,12 +37,16 @@ pub async fn main() {
     let log = slog::Logger::root(drain, o!());
 
     let root = args.cc_root.canonicalize().unwrap();
+    // let backend = Box::new(move || {
+    //     let root2 = root.clone();
+    //     unftp_sbe_rooter::RooterVfs::<Filesystem, CCUser, Meta>::new(Filesystem::new(root2))
+    // });
     let backend = Box::new(move || {
         let root2 = root.clone();
-        unftp_sbe_rooter::RooterVfs::<Filesystem, CCUser, Meta>::new(Filesystem::new(root2))
+        unftp_sbe_fs::Filesystem::new(root2)
     });
     let root = args.cc_root.canonicalize().unwrap();
-    let server = libunftp::ServerBuilder::<RooterVfs<Filesystem,CCUser,Meta>,CCUser>::with_authenticator(
+    let server = libunftp::ServerBuilder::<Filesystem,CCUser>::with_authenticator(
             backend,
             Arc::new(Auth::new(root))
         )
