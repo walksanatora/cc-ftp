@@ -8,6 +8,7 @@ use libunftp::options::ActivePassiveMode;
 use user::CCUser;
 use unftp_sbe_rooter::RooterVfs;
 use unftp_sbe_fs::{Filesystem, Meta};
+use slog::{o,Drain};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -29,6 +30,12 @@ struct Args {
 pub async fn main() {
     let args = Args::parse();
 
+    let decorator = slog_term::TermDecorator::new().build();
+    let drain = slog_term::FullFormat::new(decorator).build().fuse();
+    let drain = slog_async::Async::new(drain).build().fuse();
+
+    let log = slog::Logger::root(drain, o!());
+
     let root = args.cc_root.canonicalize().unwrap();
     let backend = Box::new(move || {
         let root2 = root.clone();
@@ -41,6 +48,7 @@ pub async fn main() {
         )
         .greeting(args.greeting.leak())
         .active_passive_mode(ActivePassiveMode::ActiveAndPassive)
+        .logger(log)
         .build().unwrap();
 
     println!("Starting server!. CC root of {:?}",args.cc_root.canonicalize().unwrap());

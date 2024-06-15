@@ -1,7 +1,7 @@
 use libunftp::auth::UserDetail;
 use unftp_sbe_rooter::UserWithRoot;
 use std::fmt::Formatter;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct CCUser {

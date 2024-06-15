@@ -8,6 +8,9 @@ async-trait = "0.1.80"
 clap = { version = "4.5.7", features = ["derive"] }
 libunftp = "0.20.0"
 regex = "1.10.5"
+slog = "2.7.0"
+slog-async = "2.8.0"
+slog-term = "2.9.1"
 tokio = { version = "1.38.0", features = ["full"] }
 unftp-sbe-fs = "0.2.5"
 unftp-sbe-rooter = "0.2.1"

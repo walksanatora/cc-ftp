@@ -61,7 +61,7 @@ impl Authenticator<CCUser> for Auth {
             println!("User Rejected (invalid password)");
             return Err(AuthenticationError::BadPassword)
         }
-        println!("User Accepted");
+        println!("User Accepted to {:?}",cloned);
         return Ok(CCUser { username: username.to_string(), root: Some(cloned) })
     }
 }
